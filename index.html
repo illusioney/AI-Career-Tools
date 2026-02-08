@@ -250,7 +250,7 @@ Generated: ${new Date().toLocaleString()}
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
-                        setError(`Error: ${errorData.error}`);
+                        setError(`Error: ${errorData.error}\n\nDetails: ${errorData.details || 'No details available'}`);
                         return;
                     }
                     const data = await response.json();
