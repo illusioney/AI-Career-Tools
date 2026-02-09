@@ -46,7 +46,7 @@ Be encouraging but honest. Keep feedback concise (3-4 paragraphs).
 Return ONLY the feedback text, no additional formatting.`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
       {
         method: 'POST',
         headers: {
