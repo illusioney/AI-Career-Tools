@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - AI Career Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function AdminPanel() {
+            const [password, setPassword] = useState('');
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [settings, setSettings] = useState({
+                googleAnalyticsId: localStorage.getItem('ga_id') || '',
+                seoTitle: localStorage.getItem('seo_title') || 'AI Career Tools - Resume, Cover Letter & Interview Prep',
+                seoDescription: localStorage.getItem('seo_description') || 'Free AI-powered tools for job seekers. Analyze resumes, generate cover letters, and practice interviews.',
+                seoKeywords: localStorage.getItem('seo_keywords') || 'resume analyzer, cover letter generator, interview prep, ATS, AI career tools',
+                monetizationEnabled: localStorage.getItem('monetization') === 'true',
+                adsenseId: localStorage.getItem('adsense_id') || '',
+                premiumPrice: localStorage.getItem('premium_price') || '9.99',
+                adminPassword: localStorage.getItem('admin_password') || 'admin123'
+            });
+            const [saved, setSaved] = useState(false);
+
+            useEffect(() => {
+                const auth = sessionStorage.getItem('admin_auth');
+                if (auth === 'true') {
+                    setIsAuthenticated(true);
+                }
+            }, []);
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                if (password === settings.adminPassword) {
+                    setIsAuthenticated(true);
+                    sessionStorage.setItem('admin_auth', 'true');
+                } else {
+                    alert('Incorrect password!');
+                }
+            };
+
+            const handleLogout = () => {
+                setIsAuthenticated(false);
+                sessionStorage.removeItem('admin_auth');
+                setPassword('');
+            };
+
+            const saveSettings = () => {
+                localStorage.setItem('ga_id', settings.googleAnalyticsId);
+                localStorage.setItem('seo_title', settings.seoTitle);
+                localStorage.setItem('seo_description', settings.seoDescription);
+                localStorage.setItem('seo_keywords', settings.seoKeywords);
+                localStorage.setItem('monetization', settings.monetizationEnabled);
+                localStorage.setItem('adsense_id', settings.adsenseId);
+                localStorage.setItem('premium_price', settings.premiumPrice);
+                localStorage.setItem('admin_password', settings.adminPassword);
+                
+                setSaved(true);
+                setTimeout(() => setSaved(false), 3000);
+            };
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+                            <div className="text-center mb-8">
+                                <div className="gradient-bg w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                                <h2 className="text-3xl font-bold text-gray-900">Admin Panel</h2>
+                                <p className="text-gray-600 mt-2">Enter password to access</p>
+                            </div>
+                            <form onSubmit={handleLogin}>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    placeholder="Enter admin password"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
+                                    autoFocus
+                                />
+                                <button
+                                    type="submit"
+                                    className="w-full gradient-bg text-white py-3 rounded-lg font-semibold hover:opacity-90 transition"
+                                >
+                                    Login
+                                </button>
+                                <p className="text-sm text-gray-500 mt-4 text-center">Default password: admin123</p>
+                            </form>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen">
+                    <header className="gradient-bg text-white py-6 shadow-lg mb-8">
+                        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+                            <div>
+                                <h1 className="text-2xl font-bold">Admin Panel</h1>
+                                <p className="text-sm opacity-90">Manage your AI Career Tools settings</p>
+                            </div>
+                            <div className="flex gap-4">
+                                <a href="/" className="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+                                    ← Back to App
+                                </a>
+                                <button
+                                    onClick={handleLogout}
+                                    className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div className="max-w-7xl mx-auto px-4 pb-12">
+                        {saved && (
+                            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+                                ✅ Settings saved successfully! Changes will apply on the main app.
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {/* Analytics */}
+                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <span>📊</span>Analytics
+                                </h3>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Google Analytics ID</label>
+                                <input
+                                    type="text"
+                                    value={settings.googleAnalyticsId}
+                                    onChange={(e) => setSettings({...settings, googleAnalyticsId: e.target.value})}
+                                    placeholder="G-XXXXXXXXXX"
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 mb-2"
+                                />
+                                <p className="text-xs text-gray-500">Get from <a href="https://analytics.google.com" target="_blank" className="text-purple-600">Google Analytics</a></p>
+                            </div>
+
+                            {/* Security */}
+                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <span>🔒</span>Security
+                                </h3>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Admin Password</label>
+                                <input
+                                    type="password"
+                                    value={settings.adminPassword}
+                                    onChange={(e) => setSettings({...settings, adminPassword: e.target.value})}
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 mb-2"
+                                />
+                                <p className="text-xs text-gray-500">Change your admin panel password</p>
+                            </div>
+
+                            {/* SEO */}
+                            <div className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <span>🔍</span>SEO Settings
+                                </h3>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Page Title</label>
+                                        <input
+                                            type="text"
+                                            value={settings.seoTitle}
+                                            onChange={(e) => setSettings({...settings, seoTitle: e.target.value})}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Meta Description</label>
+                                        <textarea
+                                            value={settings.seoDescription}
+                                            onChange={(e) => setSettings({...settings, seoDescription: e.target.value})}
+                                            className="w-full h-20 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Keywords</label>
+                                        <input
+                                            type="text"
+                                            value={settings.seoKeywords}
+                                            onChange={(e) => setSettings({...settings, seoKeywords: e.target.value})}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Monetization */}
+                            <div className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <span>💰</span>Monetization
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <input
+                                            type="checkbox"
+                                            id="monetization"
+                                            checked={settings.monetizationEnabled}
+                                            onChange={(e) => setSettings({...settings, monetizationEnabled: e.target.checked})}
+                                            className="w-5 h-5 text-purple-600 rounded"
+                                        />
+                                        <label htmlFor="monetization" className="font-semibold text-gray-700">Enable Monetization</label>
+                                    </div>
+                                    {settings.monetizationEnabled && (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-8">
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-2">AdSense ID</label>
+                                                <input
+                                                    type="text"
+                                                    value={settings.adsenseId}
+                                                    onChange={(e) => setSettings({...settings, adsenseId: e.target.value})}
+                                                    placeholder="ca-pub-XXXXXXXX"
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-semibold text-gray-700 mb-2">Premium Price ($)</label>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    value={settings.premiumPrice}
+                                                    onChange={(e) => setSettings({...settings, premiumPrice: e.target.value})}
+                                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Stats */}
+                            <div className="bg-white p-6 rounded-xl shadow-lg lg:col-span-2">
+                                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <span>📈</span>App Statistics
+                                </h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div className="bg-purple-50 p-4 rounded-lg text-center">
+                                        <div className="text-3xl font-bold text-purple-600">3</div>
+                                        <div className="text-sm text-gray-600">Features</div>
+                                    </div>
+                                    <div className="bg-green-50 p-4 rounded-lg text-center">
+                                        <div className="text-3xl font-bold text-green-600">FREE</div>
+                                        <div className="text-sm text-gray-600">Plan</div>
+                                    </div>
+                                    <div className="bg-blue-50 p-4 rounded-lg text-center">
+                                        <div className="text-3xl font-bold text-blue-600">AI</div>
+                                        <div className="text-sm text-gray-600">Powered</div>
+                                    </div>
+                                    <div className="bg-orange-50 p-4 rounded-lg text-center">
+                                        <div className="text-3xl font-bold text-orange-600">2.5</div>
+                                        <div className="text-sm text-gray-600">Model Ver.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 text-center">
+                            <button
+                                onClick={saveSettings}
+                                className="gradient-bg text-white px-12 py-4 rounded-lg font-bold text-lg hover:opacity-90 transition"
+                            >
+                                💾 Save All Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<AdminPanel />, document.getElementById('root'));
+    </script>
+</body>
+</html>
