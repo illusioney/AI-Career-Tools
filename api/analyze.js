@@ -64,9 +64,9 @@ Return ONLY valid JSON with this exact structure (no markdown, no backticks, no 
 
 Provide exactly 5 improvements ordered by impact (high to low). Be specific and actionable.`;
 
-    // Use gemini-2.0-flash-lite - lighter model with separate quota
+    // Use gemini-2.5-flash - latest stable model with available quota
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
       {
         method: 'POST',
         headers: {
