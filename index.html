@@ -3,87 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Career Tools - Resume, Cover Letter & Interview Prep</title>
+    <title>AI Career Tools - Test</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .gradient-green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-        .gradient-orange { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    </style>
 </head>
 <body>
     <div id="root"></div>
-
     <script type="text/babel">
         const { useState } = React;
 
         function App() {
-            const [currentFeature, setCurrentFeature] = useState('home');
             return (
-                <div className="min-h-screen bg-gray-50">
-                    <header className="gradient-bg text-white py-6 shadow-lg">
-                        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentFeature('home')}>
-                                <h1 className="text-2xl font-bold">AI Career Tools</h1>
-                            </div>
-                            {currentFeature !== 'home' && (
-                                <button onClick={() => setCurrentFeature('home')} className="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
-                                    ← Home
-                                </button>
-                            )}
-                        </div>
-                    </header>
-
-                    <main className="max-w-7xl mx-auto px-4 py-8">
-                        {currentFeature === 'home' && <HomePage setCurrentFeature={setCurrentFeature} />}
-                        {currentFeature === 'resume' && <ResumeAnalyzer />}
-                        {currentFeature === 'coverletter' && <CoverLetterGenerator />}
-                        {currentFeature === 'interview' && <InterviewPrep />}
-                    </main>
+                <div className="min-h-screen bg-gray-50 p-8">
+                    <h1 className="text-4xl font-bold text-center">AI Career Tools</h1>
+                    <p className="text-center mt-4">If you see this, React is working!</p>
                 </div>
             );
         }
 
-        function HomePage({ setCurrentFeature }) {
-            return (
-                <div className="fade-in text-center">
-                    <h2 className="text-5xl font-bold mb-12">Ace Your Job Search</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="bg-white p-8 rounded-2xl shadow-lg card-hover cursor-pointer" onClick={() => setCurrentFeature('resume')}>
-                            <h3 className="text-xl font-bold mb-4">Resume Analyzer</h3>
-                            <button className="gradient-bg text-white w-full py-2 rounded">Try Now</button>
-                        </div>
-                        <div className="bg-white p-8 rounded-2xl shadow-lg card-hover cursor-pointer" onClick={() => setCurrentFeature('coverletter')}>
-                            <h3 className="text-xl font-bold mb-4">Cover Letter</h3>
-                            <button className="gradient-green text-white w-full py-2 rounded">Try Now</button>
-                        </div>
-                        <div className="bg-white p-8 rounded-2xl shadow-lg card-hover cursor-pointer" onClick={() => setCurrentFeature('interview')}>
-                            <h3 className="text-xl font-bold mb-4">Interview Prep</h3>
-                            <button className="gradient-orange text-white w-full py-2 rounded">Try Now</button>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-
-        // Placeholder components to prevent errors
-        function ResumeAnalyzer() { return <div className="p-8 bg-white rounded shadow">Resume Analyzer Tool (Logic Required)</div>; }
-        function CoverLetterGenerator() { return <div className="p-8 bg-white rounded shadow">Cover Letter Tool (Logic Required)</div>; }
-        function InterviewPrep() { return <div className="p-8 bg-white rounded shadow">Interview Prep Tool (Logic Required)</div>; }
-
-        // THE FIX: Correctly render the app
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
